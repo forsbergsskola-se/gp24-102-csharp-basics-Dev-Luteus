@@ -9,9 +9,10 @@ bool isAdult = false;
 if (age >= 0 && age <= 12)
 {
     isChild = true;
-} else if (age >= 13 && age <= 19) {
+} if (age >= 13 && age <= 19)
+{
     isTeenager = true;
-} else if (age > 19) {
+} if (age > 19) {
     isAdult = true;
 }
 Console.WriteLine("You are a child: " + isChild);
