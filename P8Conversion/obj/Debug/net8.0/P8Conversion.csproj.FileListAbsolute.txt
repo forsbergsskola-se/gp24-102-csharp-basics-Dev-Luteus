@@ -1,0 +1,15 @@
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\bin\Debug\net8.0\P8Conversion.exe
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\bin\Debug\net8.0\P8Conversion.deps.json
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\bin\Debug\net8.0\P8Conversion.runtimeconfig.json
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\bin\Debug\net8.0\P8Conversion.dll
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\bin\Debug\net8.0\P8Conversion.pdb
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\P8Conversion.GeneratedMSBuildEditorConfig.editorconfig
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\P8Conversion.AssemblyInfoInputs.cache
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\P8Conversion.AssemblyInfo.cs
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\P8Conversion.csproj.CoreCompileInputs.cache
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\P8Conversion.sourcelink.json
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\P8Conversion.dll
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\refint\P8Conversion.dll
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\P8Conversion.pdb
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\P8Conversion.genruntimeconfig.cache
+C:\C# Projects\gp24-102-csharp-basics-Dev-Luteus\P8Conversion\obj\Debug\net8.0\ref\P8Conversion.dll
