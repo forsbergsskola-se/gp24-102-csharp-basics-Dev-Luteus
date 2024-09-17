@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Globalization;
+using System.Runtime.CompilerServices;
 
 Console.WriteLine("What's your age?");
 int age = Int32.Parse(Console.ReadLine());
@@ -36,6 +37,8 @@ if (age > userInt) {
     } else {
         Console.WriteLine("That number is odd!");
     }
+} else {
+    Console.WriteLine("Your age and integer are the same number!");
 }
 
 // P11_1Grades --------------------------------------------------------
@@ -92,10 +95,59 @@ Console.WriteLine(@"Please enter a single character.
 I'll determine whether its a digit, vowel or consonant.
 Input: ");
 char ch; ch = Convert.ToChar(Console.ReadLine().ToLower());
+//I could use OR Operators here. But I opted for arrays for a cleaner code-read.
 
 char[] vowels = {'a', 'e', 'i', 'o', 'u', 'y'};
 char[] consonants = {'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 
                     'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'};
 if (Array.Exists(vowels, v => v == ch)) {
-    
-} else if (Array.Exists(consonants, c => c == ch)) {}
+    Console.WriteLine("Your input is a vowel!");
+} else if (Array.Exists(consonants, c => c == ch)) {
+    Console.WriteLine("Your input is a consonant!");
+}
+else {
+    Console.WriteLine("Your input is a digit!");
+}
+// P11_4Calculator --------------------------------------------------------
+Console.WriteLine(@"This is a Calculator!
+Please enter two numbers, then select your operation!
+------------------------
+Enter your First Number:");
+string input1 = Console.ReadLine().Replace(',', '.');
+double calcN1 = Double.Parse(input1, CultureInfo.InvariantCulture);
+
+Console.WriteLine("Enter your Second Number:");
+string input2 = Console.ReadLine().Replace(',', '.');
+double calcN2 = Double.Parse(input2, CultureInfo.InvariantCulture);
+
+Console.WriteLine(@"Please select your operation.
+A) Addition
+B) Subtraction
+C) Multiplication
+D) Division
+");
+switch (Console.ReadLine().ToUpper()) {
+    case "A":
+        Console.WriteLine($"Your result: {calcN1} + {calcN2} = " + (calcN1 + calcN2));
+        break;
+    case "B":
+        Console.WriteLine($"Your result: {calcN1} - {calcN2} = " + (calcN1 - calcN2));
+        break;
+    case "C":
+        Console.WriteLine($"Your result: {calcN1} * {calcN2} = " + (calcN1 * calcN2));
+        break;
+    case "D":
+        Console.WriteLine($"Your result: {calcN1} / {calcN2} = " + (calcN1 / calcN2));
+        break;
+    default:
+        Console.WriteLine("Please choose a valid option.");
+        break;
+}
+// P11_5EvenOrOdd --------------------------------------------------------
+Console.WriteLine("Please enter a number! I'll tell you whether it is even or odd.");
+int p5Num = Int32.Parse(Console.ReadLine());
+if (p5Num % 2 == 0) {
+    Console.WriteLine("The number is even!");
+} else {
+    Console.WriteLine("That number is odd!");
+}
