@@ -1,22 +1,29 @@
 ﻿using System;
+using System.ComponentModel.Design.Serialization;
 
 namespace NimConsoleApplication
 {
     public static class Program
     {
+        private static int winCountBasic = 0; private static int lostCountBasic = 0;
         static void Main()
         {
             bool exitProgram = false;
             while (!exitProgram) { 
-                string mainMenu = @"
-        <> MAIN MENU <>
--------------------------------
-    Please select an option
-    -----------------------
-    [A] - Nim Game (basic)
-    [B] - Nim Game (fun)
-    [Q] - Quit Program
-===============================";
+                string mainMenu = @$"                                     
+  /\/\    __ _ (#) _ __     /\/\    ___  _ __   _   _ 
+ /    \  / _` || || '_ \   /    \  / _ \| '_ \ | | | |
+/ /\/\ \| (_| || || | | | / /\/\ \| -__/| | | || |_| |
+\/    \/ \__,_||_||_| |_| \/    \/ \___||_| |_| \__,_|
+                _______________________
+                Please select an option
+                ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+           <<  | [A] - Nim Game (basic) |  >>
+               | Wins: {winCountBasic}     Loses: {lostCountBasic}   |
+               ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+           <<  | [B] - Nim Game (fun)   |  >>
+           <<  | [Q] - Quit Program     |  >>
+               ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨";
                 Console.WriteLine(mainMenu);
                 string menuSelection = Console.ReadLine().ToUpper(); //Console.Readline returns string, change to var?
 
@@ -35,19 +42,17 @@ namespace NimConsoleApplication
                 }
             }
         }
-
         static void BasicNim()
         {
             bool backToMenu = false;
             while (!backToMenu) {
                 Console.WriteLine("You're inside of Nim Game (basic)!");
                 Console.WriteLine("Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
-
+                Console.WriteLine($@"You've won {winCountBasic} times. You've lost {lostCountBasic} times.");
+            
                 string menuSelection = Console.ReadLine().ToUpper();
                 if (menuSelection == "C") { //If instead of switch for fun
                     Console.WriteLine("Welcome to Nim!");
-                    int winCount = 0; int lostCount = 0;
-                    Console.WriteLine($@"You've won {winCount} times. You've lost {lostCount} times.");
                     int matchesCount = 24; int playerMove = 0;
                     bool playerTurn = false; bool aiTurn = false; 
                     bool gameOver = false;
@@ -93,10 +98,10 @@ namespace NimConsoleApplication
                     }
                     if (aiTurn == true && playerTurn == false) {
                         Console.WriteLine("The AI drew the last match. You win!");
-                        winCounter++;
+                        winCountBasic++;
                     } else if (playerTurn == true && aiTurn == false) {
                         Console.WriteLine("You drew the last match. You lose!");
-                        loseCounter++;
+                        lostCountBasic++;
                     }
                     static void DisplayMatches(int matchesCount) { //function to display matches. (I have prior C# experience)
                         if (matchesCount > 0) {
