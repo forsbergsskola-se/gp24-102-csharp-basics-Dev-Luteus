@@ -50,13 +50,13 @@ namespace NimConsoleApplication
         {
             bool backToMenu = false;
             while (!backToMenu) {
-                Console.WriteLine("You're inside of Nim Game (basic)!");
+                Console.WriteLine(); Console.WriteLine("You're inside of Nim Game (basic)!");
                 Console.WriteLine("Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
                 Console.WriteLine($@"You've won {winCountBasic} times. You've lost {lostCountBasic} times.");
             
                 string menuSelection = Console.ReadLine().ToUpper();
                 if (menuSelection == "C") { //If instead of switch for fun
-                    Console.WriteLine("Welcome to Nim!");
+                    Console.WriteLine(); Console.WriteLine("Welcome to Nim!");
                     int matchesCount = 24; int playerMove = 0;
                     bool playerTurn = false; bool aiTurn = false; 
                     bool gameOver = false;
@@ -101,9 +101,11 @@ namespace NimConsoleApplication
                         goto nim;
                     }
                     if (aiTurn == true && playerTurn == false) {
+                        Console.Clear();
                         Console.WriteLine("The AI drew the last match. You win!");
                         winCountBasic++;
                     } else if (playerTurn == true && aiTurn == false) {
+                        Console.Clear();
                         Console.WriteLine("You drew the last match. You lose!");
                         lostCountBasic++;
                     }
@@ -126,13 +128,13 @@ namespace NimConsoleApplication
         {
             bool backToMenu = false;
             while (!backToMenu) {
-                Console.WriteLine("You're inside of Nim Game (basic)!");
+                Console.WriteLine(); Console.WriteLine(@"You're inside of Nim Game (fun)!");
                 Console.WriteLine("Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
-                Console.WriteLine($@"You've won {winCountBasic} times. You've lost {lostCountBasic} times.");
+                Console.WriteLine($@"You've won {winCountFun} times. You've lost {lostCountFun} times.");
             
                 string menuSelection = Console.ReadLine().ToUpper();
                 if (menuSelection == "C") { //If instead of switch for fun
-                    Console.WriteLine("Welcome to Nim!");
+                    Console.WriteLine(); Console.WriteLine("Welcome to Nim!");
                     int matchesCount = 24; int playerMove = 0;
                     bool playerTurn = false; bool aiTurn = false; 
                     bool gameOver = false;
@@ -177,9 +179,11 @@ namespace NimConsoleApplication
                         goto nim;
                     }
                     if (aiTurn == true && playerTurn == false) {
+                        Console.Clear();
                         Console.WriteLine("The AI drew the last match. You win!");
                         winCountFun++;
                     } else if (playerTurn == true && aiTurn == false) {
+                        Console.Clear();
                         Console.WriteLine("You drew the last match. You lose!");
                         lostCountFun++;
                     }
