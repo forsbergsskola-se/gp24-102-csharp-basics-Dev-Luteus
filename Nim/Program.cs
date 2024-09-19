@@ -152,11 +152,16 @@ namespace NimConsoleApplication
         }
         static void FunNim()
         {
+            Console.OutputEncoding = Encoding.UTF8; //Accept otherwise un-recognised characters
             bool backToMenu = false;
             while (!backToMenu) {
                 Console.WriteLine(); Console.WriteLine(@"You're inside of Nim Game (fun)!");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Your GOAL is to win against the AI 3 times! If you lose 3 times, the AI wins."); //FORCE TO MENU IF WON 3 TIMES
+                Console.ResetColor();
+                Console.WriteLine($@"You've won {winCountFun} times. You've lost {lostCountFun} times.
+");
                 Console.WriteLine("Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
-                Console.WriteLine($@"You've won {winCountFun} times. You've lost {lostCountFun} times.");
             
                 string menuSelection = Console.ReadLine().ToUpper();
                 if (menuSelection == "C") { //If instead of switch for fun
@@ -168,12 +173,6 @@ namespace NimConsoleApplication
                     
                     nim:
                     while (!gameOver) {
-                        if (matchesCount <= 6) {
-                            AiDialogue("Almost there...!");
-                        } else if (matchesCount == 1) {
-                            AiDialogue("One match left!");
-                        }
-                        
                         DisplayMatches(matchesCount);
                         Console.WriteLine("How many matches would you like to draw? (1-3)");
                         
@@ -198,13 +197,41 @@ namespace NimConsoleApplication
                                 Console.WriteLine("Please enter a valid amount! (1-3)");
                                 goto playerTurn;
                         }
-                        DisplayMatches(matchesCount); //End of player turn
+                        DisplayMatches(matchesCount);
                         if (matchesCount <= 0 && playerTurn == true) { gameOver = true; }
+                        //End of player logic ---------------------------------------------
                         
-                        if (matchesCount > 0) { //Prevent AI from taking a turn if Matches = 0
-                            int aiMove = Ai.Next(1, 4);
-                            Console.WriteLine("The AI draws " + aiMove + " matches.");
+                        //AI Logic --------------------------------------------------------
+                        /*-------------
+                        Special Event
+                        ---------------*/
+                        if (winCountFun >= 2 && matchesCount < 5) {
+                                Console.Clear();
+                                AiDialogue($@"Okay STOP! ୧(๑•̀ᗝ•́)૭! You've won {winCountFun} times already!
+Not this time, you rascal. Since you're clearly cheating.. Let's actually play a game by chance.
+Rock Paper Scissors! You have no choice..");
+                        }
+                        
+                        /*------------
+                        Normal Event (instead of Special Event)
+                        --------------*/
+                        else if (matchesCount > 0) { //Prevent AI from taking a turn if Matches = 0
                             aiTurn = true; playerTurn = false;
+                            
+                            //Dialogue logic conditions -----------------------------------
+                            if (matchesCount <= 7) {
+                                Console.WriteLine();
+                                AiDialogue("(ᐡ˘˶⚈_⚈ᐡ)..");
+                            }
+                            else if (matchesCount <= 11) {
+                            Console.WriteLine();
+                            AiDialogue(@"Hmm.. (っº - ºς)..
+Let me think..");
+                            }
+                            
+                            int aiMove = Ai.Next(1, 4); //Ai Move + Lose ------------------
+                            Console.WriteLine("The AI draws " + aiMove + " matches.");
+                            Console.WriteLine();
                             matchesCount -= aiMove;
                             if (matchesCount <= 0 && aiTurn == true) {
                                 gameOver = true;
@@ -217,10 +244,17 @@ namespace NimConsoleApplication
                         Console.WriteLine("The AI drew the last match. You win!");
                         AiDialogue(@"(╯•̀ᴖ•́)╯︵ ┻━┻");
                         winCountFun++;
-                    } else if (playerTurn == true && aiTurn == false) {
+                        
+                        if (winCountFun > 1) {
+                            Console.Clear(); //Prevent double dialogue =)
+                            Console.WriteLine("The AI drew the last match. You win again!");
+                            Console.WriteLine($"Current Wins: {winCountFun}");
+                            AiDialogue(@"⁽⁽(੭ꐦ •̀Д•́ )੭*⁾⁾ AGAIN?! YOU F*#!?) B%+£@&");
+                        }
+                    } 
+                    else if (playerTurn == true && aiTurn == false) {
                         Console.Clear();
                         Console.WriteLine("You drew the last match. You lose!");
-                        Console.OutputEncoding = Encoding.UTF8;
                         AiDialogue($@"⸜(｡˃ ᵕ ˂)⸝♡"); //@ allows \ and / -- I never considered this
                         lostCountFun++;
                     }
