@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 
 namespace NimConsoleApplication
@@ -27,9 +28,32 @@ namespace NimConsoleApplication
                ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
            <<  | [Q] - Quit Program     |  >>
                ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨";
-                Console.WriteLine(mainMenu);
+                
+                //I want to apply colour to sections of the mainMenu string, without writing multiple Console.WriteLine statements.
+                string[] menuLines = mainMenu.Split(Environment.NewLine); //TIL about C# Lines.
+                foreach (string menuLine in menuLines) {
+                    if (menuLine.Contains("Please select an option")) {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                    } else if (menuLine.Contains("<<  | [A] - Nim Game (basic) |  >>")) {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    } else if (menuLine.Contains("<<  | [B] - Nim Game (fun)   |  >>")) {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        
+                    } else if (menuLine.Contains("¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨") || menuLine.Contains("__________________________")) {
+                        Console.ResetColor();
+                    } 
+                    else if (menuLine.Contains($"| Wins: {winCountBasic}     Loses: {lostCountBasic}   |") || menuLine.Contains($"| Wins: {winCountFun}     Loses: {lostCountFun}   |")) 
+                    {  //This is *more* readable as a One-Line than a Multiple-line statement
+                        Console.ResetColor();
+                    } else //Colour the giant Main Menu ASCII text
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    } 
+                    Console.WriteLine(menuLine); //Print the newly coloured Menu. NECESSARY.
+                }                                //Console.WriteLine(mainMenu) no longer necessary
+                Console.ResetColor(); 
+                
                 string menuSelection = Console.ReadLine().ToUpper(); //Console.Readline returns string, change to var?
-
                 switch (menuSelection) {
                     case "A":
                         BasicNim();
