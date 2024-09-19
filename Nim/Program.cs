@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Text;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 
 namespace NimConsoleApplication
 {
-    public static class Program
+    public static class Program 
     {
         private static int winCountBasic = 0; private static int lostCountBasic = 0;
         private static int winCountFun = 0; private static int lostCountFun = 0;
@@ -53,7 +54,7 @@ namespace NimConsoleApplication
                 }                                //Console.WriteLine(mainMenu) no longer necessary
                 Console.ResetColor(); 
                 
-                string menuSelection = Console.ReadLine().ToUpper(); //Console.Readline returns string, change to var?
+                string menuSelection = Console.ReadLine().ToUpper(); //Read menuLine. Console.Readline returns string, change to var?
                 switch (menuSelection) {
                     case "A":
                         BasicNim();
@@ -85,6 +86,7 @@ namespace NimConsoleApplication
                     bool playerTurn = false; bool aiTurn = false; 
                     bool gameOver = false;
                     Random Ai = new Random();
+                    
                     nim:
                     while (!gameOver) {
                         DisplayMatches(matchesCount);
@@ -163,10 +165,18 @@ namespace NimConsoleApplication
                     bool playerTurn = false; bool aiTurn = false; 
                     bool gameOver = false;
                     Random Ai = new Random();
+                    
                     nim:
                     while (!gameOver) {
+                        if (matchesCount <= 6) {
+                            AiDialogue("Almost there...!");
+                        } else if (matchesCount == 1) {
+                            AiDialogue("One match left!");
+                        }
+                        
                         DisplayMatches(matchesCount);
                         Console.WriteLine("How many matches would you like to draw? (1-3)");
+                        
                         playerTurn:
                         playerTurn = true; aiTurn = false;
                         string input = Console.ReadLine();
@@ -205,10 +215,13 @@ namespace NimConsoleApplication
                     if (aiTurn == true && playerTurn == false) {
                         Console.Clear();
                         Console.WriteLine("The AI drew the last match. You win!");
+                        AiDialogue(@"(╯•̀ᴖ•́)╯︵ ┻━┻");
                         winCountFun++;
                     } else if (playerTurn == true && aiTurn == false) {
                         Console.Clear();
                         Console.WriteLine("You drew the last match. You lose!");
+                        Console.OutputEncoding = Encoding.UTF8;
+                        AiDialogue($@"⸜(｡˃ ᵕ ˂)⸝♡"); //@ allows \ and / -- I never considered this
                         lostCountFun++;
                     }
                     static void DisplayMatches(int matchesCount) { //function to display matches. (I have prior C# experience)
@@ -217,6 +230,11 @@ namespace NimConsoleApplication
                         } else {
                             Console.WriteLine($"Matches left: ({matchesCount})");
                         }
+                    }
+                    static void AiDialogue(string message) {
+                        Console.ForegroundColor = ConsoleColor.Green; // AI dialogue color
+                        Console.WriteLine("AI: " + message);          // AI label before message
+                        Console.ResetColor();
                     }
                 } else if (menuSelection == "Q") {
                     backToMenu = true;
