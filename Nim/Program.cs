@@ -7,10 +7,10 @@ namespace NimConsoleApplication
 {
     public static class Program
     {
-        private static int winCountBasic = 0;
-        private static int lostCountBasic = 0;
-        private static int winCountFun = 0;
-        private static int lostCountFun = 0;
+        private static int winCountBasicMenu = 0;
+        private static int lostCountBasicMenu = 0;
+        private static int winCountFunMenu = 0;
+        private static int lostCountFunMenu = 0;
 
         static void Main()
         {
@@ -25,10 +25,10 @@ namespace NimConsoleApplication
                 Please select an option
                ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
            <<  | [A] - Nim Game (basic) |  >>
-               | Wins: {winCountBasic}     Loses: {lostCountBasic}   |
+               | Wins: {winCountBasicMenu}     Loses: {lostCountBasicMenu}   |
                ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
            <<  | [B] - Nim Game (fun)   |  >>
-               | Wins: {winCountFun}     Loses: {lostCountFun}   |
+               | Wins: {winCountFunMenu}     Loses: {lostCountFunMenu}   |
                ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
            <<  | [Q] - Quit Program     |  >>
                ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨";
@@ -46,8 +46,8 @@ namespace NimConsoleApplication
                     } else if (menuLine.Contains("¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨") ||
                                menuLine.Contains("__________________________")) {
                         Console.ResetColor();
-                    } else if (menuLine.Contains($"| Wins: {winCountBasic}     Loses: {lostCountBasic}   |") ||
-                               menuLine.Contains($"| Wins: {winCountFun}     Loses: {lostCountFun}   |")) {
+                    } else if (menuLine.Contains($"| Wins: {winCountBasicMenu}     Loses: {lostCountBasicMenu}   |") ||
+                               menuLine.Contains($"| Wins: {winCountFunMenu}     Loses: {lostCountFunMenu}   |")) {
                         //This is *more* readable as a One-Line than a Multiple-line statement
                         Console.ResetColor();
                     } else //Colour the giant Main Menu ASCII text
@@ -87,7 +87,7 @@ namespace NimConsoleApplication
                 Console.WriteLine();
                 Console.WriteLine("You're inside of Nim Game (basic)!");
                 Console.WriteLine("Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
-                Console.WriteLine($@"You've won {winCountBasic} times. You've lost {lostCountBasic} times.");
+                Console.WriteLine($@"You've won {winCountBasicMenu} times. You've lost {lostCountBasicMenu} times.");
 
                 string menuSelection = Console.ReadLine().ToUpper();
                 if (menuSelection == "C") {
@@ -154,11 +154,11 @@ namespace NimConsoleApplication
                     if (aiTurn == true && playerTurn == false) {
                         Console.Clear();
                         Console.WriteLine("The AI drew the last match. You win!");
-                        winCountBasic++;
+                        winCountBasicMenu++;
                     } else if (playerTurn == true && aiTurn == false) {
                         Console.Clear();
                         Console.WriteLine("You drew the last match. You lose!");
-                        lostCountBasic++;
+                        lostCountBasicMenu++;
                     }
 
                     static void DisplayMatches(int matchesCount)
@@ -195,26 +195,28 @@ namespace NimConsoleApplication
             Console.ResetColor();
             
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(@"Are you Certain you wish to proceed?
-Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
+            Console.WriteLine("Are you Certain you wish to proceed?"
+                            + "Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
             Console.ResetColor();
-            
+
+            int winCountFun = 0; int lostCountFun = 0;
             string menuSelection = Console.ReadLine().ToUpper();
             if (menuSelection == "C") {
+                bool specialEvent = false; //Special Event trigger
                 
                 // START GAME
                 bool backToMenu = false;
                 while (!backToMenu) {
 
-                    // If the user has won 3 times.
+                    // If the user has won 3 times. (( THEY CANNOT PLAY AGAIN )) 
                     if (winCountFun >= 3) {
                         Console.Clear(); //Prevent double dialogue =)
                         Console.WriteLine("The AI drew the last match. You win again!");
                         Console.WriteLine($"Current Wins: {winCountFun}");
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(@"AI: (っ- ‸ - ς).. Alright, champ. You win. I put up the flag 🏳 ..
-    ..  ε=ε三三  .·°՞┏(°;ᗒ﹏࣭ᗕ°)┛
-");
+                        Console.WriteLine(@"AI: (っ- ‸ - ς).. Alright, champ. You win. I put up the flag 🏳 .."
+                                           + "    ..  ε=ε三三  .·°՞┏(°;ᗒ﹏࣭ᗕ°)┛"
+                                           + "");
                         Console.ResetColor();
                         Console.WriteLine("You Won! Press 'Q' to go back to the Main Menu.");
 
@@ -273,21 +275,18 @@ Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
                             //End of player logic ---------------------------------------------
 
                             //AI Logic --------------------------------------------------------
-                            /*-------------
-                            Special Event
+                            
+                            /*Special Event
                             ---------------*/
-                            //                         if (winCountFun >= 2 && matchesCount < 5) {
-                            //                                 Console.Clear();
-                            //                                 AiDialogue($@"Okay STOP! ୧(๑•̀ᗝ•́)૭! You've won {winCountFun} times already!
-                            // Not this time, you rascal. Since you're clearly cheating.. Let's actually play a game by chance.
-                            // Rock Paper Scissors! You have no choice..");
-                            //                                 //RockPaperScissors();
-                            //                         }
-                            //                         
-                            //                         /*------------
-                            //                         Normal Event (instead of Special Event)
-                            //                         --------------*/ //else under
-                            if (matchesCount > 0) {
+                            if (winCountFun >= 2 && matchesCount < 5 && specialEvent == false) { 
+                                    RockPaperScissors();
+                                    specialEvent = true; //Makes sure this event runs only ONCE
+                            }
+                            
+                            /*Normal Event
+                            --------------*/
+                            //else if not Special Event
+                            else if (matchesCount > 0) {
                                 //Prevent AI from taking a turn if Matches = 0
                                 aiTurn = true;
                                 playerTurn = false;
@@ -298,10 +297,10 @@ Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
                                     AiDialogue("(ᐡ˘˶⚈_⚈ᐡ)..");
                                 } else if (matchesCount <= 11) {
                                     Console.WriteLine();
-                                    AiDialogue(@"Hmm.. (っº - ºς)..
-    Let me think..");
+                                    AiDialogue("Hmm.. (っº - ºς).." +
+                                               "Let me think..");
                                 }
-
+                                
                                 int aiMove = Ai.Next(1, 4); //Ai Move + Lose ------------------
                                 Console.WriteLine("The AI draws " + aiMove + " matches.");
                                 Console.WriteLine();
@@ -319,6 +318,7 @@ Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
                             Console.WriteLine("The AI drew the last match. You win!");
                             AiDialogue(@"(╯•̀ᴖ•́)╯︵ ┻━┻");
                             winCountFun++;
+                            winCountFunMenu++;
 
                             if (winCountFun > 1) {
                                 Console.Clear(); //Prevent double dialogue =)
@@ -331,6 +331,7 @@ Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
                             Console.WriteLine("You drew the last match. You lose!");
                             AiDialogue($@"⸜(｡˃ ᵕ ˂)⸝♡"); //@ allows \ and / -- I never considered this
                             lostCountFun++;
+                            lostCountFunMenu++;
                         }
 
                         static void DisplayMatches(int matchesCount)
@@ -343,18 +344,58 @@ Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
                                 Console.WriteLine($"Matches left: ({matchesCount})");
                             }
                         }
-
                         static void AiDialogue(string message)
                         {
                             Console.ForegroundColor = ConsoleColor.Green; // AI dialogue color
                             Console.WriteLine("AI: " + message); // AI label before message
                             Console.ResetColor();
                         }
+                        void RockPaperScissors() //I use + and \n here to make the code more readable.
+                        { 
+                            AiDialogue($"Okay STOP! ୧(๑•̀ᗝ•́)૭! You've won {winCountFun} times already!\n" + 
+                                       $"Not this time, you rascal. Since you're clearly cheating.. Let's actually play a game by chance.\n" +
+                                       $"Rock Paper Scissors! You have no choice..\n");
+                            AiDialogue("Pick your choice!\n" + 
+                                       "1) Rock\n" +
+                                       "2) Paper\n" +
+                                       "3) Scissors\n");
+                            
+                            int userChoice = 0; bool validInput = false; 
+                            
+                            //I got unhandled exceptions. I tried TryParse and other statements, but needed a --
+                            while (!validInput) // -- While loop to make input is correct after reading the lines after
+                            {
+                                string input = Console.ReadLine();
+                                if (int.TryParse(input, out userChoice) && (userChoice >= 1 && userChoice <= 3)) 
+                                {
+                                    validInput = true;
+                                } else {
+                                    Console.WriteLine("Invalid input! Please enter a number between 1 and 3.");
+                                }
+                            }
+                            
+                            int aiMove = Ai.Next(1, 4);
+                            if (userChoice == aiMove)
+                            {
+                                Console.WriteLine("It's a draw!");
+                                AiDialogue("Hah! ৻(  •̀ ᗜ •́  ৻) I saw that one coming!");
+                            } 
+                            else if ((userChoice == 1 && aiMove == 3) || //Rock - Scissors
+                                     (userChoice == 2 && aiMove == 1) || //Paper - Rock
+                                     (userChoice == 3 && aiMove == 2))   //Scissors - Paper
+                            {
+                                Console.WriteLine("You win!"); 
+                                AiDialogue("_(:‚‹」∠)_ I lost!");
+                            } else { //Lost
+                                Console.WriteLine("You lost!"); 
+                                AiDialogue("♡⸜(˶˃ ᵕ ˂˶)⸝♡ I won!");
+                            }
+                        }
                     }
                 }
             } else if (menuSelection == "Q") {
                 Console.Clear();
-                Main(); //I am too lazy to make two while loops
+                Main();
             } else {
                 Console.WriteLine("Invalid choice! Please select one of the appropriate options.");
             }
