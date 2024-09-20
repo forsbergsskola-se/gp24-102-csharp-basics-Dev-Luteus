@@ -195,7 +195,7 @@ namespace NimConsoleApplication
             Console.ResetColor();
             
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Are you Certain you wish to proceed?"
+            Console.WriteLine("Are you Certain you wish to proceed?\n"
                             + "Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
             Console.ResetColor();
 
@@ -211,12 +211,11 @@ namespace NimConsoleApplication
                     // If the user has won 3 times. (( THEY CANNOT PLAY AGAIN )) 
                     if (winCountFun >= 3) {
                         Console.Clear(); //Prevent double dialogue =)
-                        Console.WriteLine("The AI drew the last match. You win again!");
+                        Console.WriteLine("You win again!");
                         Console.WriteLine($"Current Wins: {winCountFun}");
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(@"AI: (っ- ‸ - ς).. Alright, champ. You win. I put up the flag 🏳 .."
-                                           + "    ..  ε=ε三三  .·°՞┏(°;ᗒ﹏࣭ᗕ°)┛"
-                                           + "");
+                        Console.WriteLine("AI: (っ- ‸ - ς).. Alright, champ. You win. I put up the flag 🏳 .. \n"
+                                          + "    ..  ε=ε三三  .·°՞┏(°;ᗒ﹏࣭ᗕ°)┛\n");
                         Console.ResetColor();
                         Console.WriteLine("You Won! Press 'Q' to go back to the Main Menu.");
 
@@ -319,7 +318,7 @@ namespace NimConsoleApplication
                             AiDialogue(@"(╯•̀ᴖ•́)╯︵ ┻━┻");
                             winCountFun++;
                             winCountFunMenu++;
-
+                            
                             if (winCountFun > 1) {
                                 Console.Clear(); //Prevent double dialogue =)
                                 Console.WriteLine("The AI drew the last match. You win again!");
@@ -355,6 +354,7 @@ namespace NimConsoleApplication
                             AiDialogue($"Okay STOP! ୧(๑•̀ᗝ•́)૭! You've won {winCountFun} times already!\n" + 
                                        $"Not this time, you rascal. Since you're clearly cheating.. Let's actually play a game by chance.\n" +
                                        $"Rock Paper Scissors! You have no choice..\n");
+                            DrawGoTo: 
                             AiDialogue("Pick your choice!\n" + 
                                        "1) Rock\n" +
                                        "2) Paper\n" +
@@ -379,16 +379,25 @@ namespace NimConsoleApplication
                             {
                                 Console.WriteLine("It's a draw!");
                                 AiDialogue("Hah! ৻(  •̀ ᗜ •́  ৻) I saw that one coming!");
+                                goto DrawGoTo;
                             } 
                             else if ((userChoice == 1 && aiMove == 3) || //Rock - Scissors
                                      (userChoice == 2 && aiMove == 1) || //Paper - Rock
                                      (userChoice == 3 && aiMove == 2))   //Scissors - Paper
                             {
+                                winCountFun++;
                                 Console.WriteLine("You win!"); 
                                 AiDialogue("_(:‚‹」∠)_ I lost!");
+                                Console.WriteLine("Press anything to continue...");
+                                Console.ReadLine(); 
+                                gameOver = true;
                             } else { //Lost
+                                lostCountFun++;
                                 Console.WriteLine("You lost!"); 
                                 AiDialogue("♡⸜(˶˃ ᵕ ˂˶)⸝♡ I won!");
+                                Console.WriteLine("Press anything to continue...");
+                                Console.ReadLine();
+                                gameOver = true;
                             }
                         }
                     }
