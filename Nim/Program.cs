@@ -185,25 +185,27 @@ namespace NimConsoleApplication
             Console.OutputEncoding = Encoding.UTF8; //Accept otherwise un-recognised characters
             Console.WriteLine();
             Console.WriteLine(@"You're inside of Nim Game (fun)!");
-            
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Your GOAL is to win against the AI 3 times! If you lose 3 times, the AI wins.");
-            Console.ResetColor(); Console.WriteLine(); 
-            
+            Console.ResetColor();
+            Console.WriteLine();
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("You cannot return to the Main Menu until you've won 3 times.");
             Console.ResetColor();
-            
+
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Are you Certain you wish to proceed?\n"
-                            + "Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
+                              + "Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
             Console.ResetColor();
 
-            int winCountFun = 0; int lostCountFun = 0;
+            int winCountFun = 0;
+            int lostCountFun = 0;
             string menuSelection = Console.ReadLine().ToUpper();
             if (menuSelection == "C") {
                 bool specialEvent = false; //Special Event trigger
-                
+
                 // START GAME
                 bool backToMenu = false;
                 while (!backToMenu) {
@@ -274,14 +276,14 @@ namespace NimConsoleApplication
                             //End of player logic ---------------------------------------------
 
                             //AI Logic --------------------------------------------------------
-                            
+
                             /*Special Event
                             ---------------*/
-                            if (winCountFun >= 2 && matchesCount < 5 && specialEvent == false) { 
-                                    RockPaperScissors();
-                                    specialEvent = true; //Makes sure this event runs only ONCE
+                            if (winCountFun >= 2 && matchesCount < 5 && specialEvent == false) {
+                                RockPaperScissors();
+                                specialEvent = true; //Makes sure this event runs only ONCE
                             }
-                            
+
                             /*Normal Event
                             --------------*/
                             //else if not Special Event
@@ -299,7 +301,7 @@ namespace NimConsoleApplication
                                     AiDialogue("Hmm.. (っº - ºς).." +
                                                "Let me think..");
                                 }
-                                
+
                                 int aiMove = Ai.Next(1, 4); //Ai Move + Lose ------------------
                                 Console.WriteLine("The AI draws " + aiMove + " matches.");
                                 Console.WriteLine();
@@ -308,6 +310,7 @@ namespace NimConsoleApplication
                                     gameOver = true;
                                 }
                             }
+
                             goto nim;
                         }
 
@@ -318,7 +321,7 @@ namespace NimConsoleApplication
                             AiDialogue(@"(╯•̀ᴖ•́)╯︵ ┻━┻");
                             winCountFun++;
                             winCountFunMenu++;
-                            
+
                             if (winCountFun > 1) {
                                 Console.Clear(); //Prevent double dialogue =)
                                 Console.WriteLine("The AI drew the last match. You win again!");
@@ -343,57 +346,60 @@ namespace NimConsoleApplication
                                 Console.WriteLine($"Matches left: ({matchesCount})");
                             }
                         }
+
                         static void AiDialogue(string message)
                         {
                             Console.ForegroundColor = ConsoleColor.Green; // AI dialogue color
                             Console.WriteLine("AI: " + message); // AI label before message
                             Console.ResetColor();
                         }
+
                         void RockPaperScissors() //I use + and \n here to make the code more readable.
-                        { 
-                            AiDialogue($"Okay STOP! ୧(๑•̀ᗝ•́)૭! You've won {winCountFun} times already!\n" + 
+                        {
+                            AiDialogue($"Okay STOP! ୧(๑•̀ᗝ•́)૭! You've won {winCountFun} times already!\n" +
                                        $"Not this time, you rascal. Since you're clearly cheating.. Let's actually play a game by chance.\n" +
                                        $"Rock Paper Scissors! You have no choice..\n");
-                            DrawGoTo: 
-                            AiDialogue("Pick your choice!\n" + 
-                                       "1) Rock\n" +
-                                       "2) Paper\n" +
-                                       "3) Scissors\n");
                             
-                            int userChoice = 0; bool validInput = false; 
-                            
+                            DrawGoTo: //This art took way too long to make
+                            AiDialogue(@"Pick your choice! 
+1) Rock  2) Paper  3) Scissors
+  _.._     _____       ()() 
+ |ᵕ'` \    )    )      //|\ 
+ '.__./   (____(      (/ |) ");
+
+                            int userChoice = 0;
+                            bool validInput = false;
+
                             //I got unhandled exceptions. I tried TryParse and other statements, but needed a --
                             while (!validInput) // -- While loop to make input is correct after reading the lines after
                             {
                                 string input = Console.ReadLine();
-                                if (int.TryParse(input, out userChoice) && (userChoice >= 1 && userChoice <= 3)) 
-                                {
+                                if (int.TryParse(input, out userChoice) && (userChoice >= 1 && userChoice <= 3)) {
                                     validInput = true;
                                 } else {
                                     Console.WriteLine("Invalid input! Please enter a number between 1 and 3.");
                                 }
                             }
-                            
+
                             int aiMove = Ai.Next(1, 4);
-                            if (userChoice == aiMove)
-                            {
+                            if (userChoice == aiMove) {
                                 Console.WriteLine("It's a draw!");
                                 AiDialogue("Hah! ৻(  •̀ ᗜ •́  ৻) I saw that one coming!");
                                 goto DrawGoTo;
-                            } 
-                            else if ((userChoice == 1 && aiMove == 3) || //Rock - Scissors
-                                     (userChoice == 2 && aiMove == 1) || //Paper - Rock
-                                     (userChoice == 3 && aiMove == 2))   //Scissors - Paper
+                            } else if ((userChoice == 1 && aiMove == 3) || //Rock - Scissors
+                                       (userChoice == 2 && aiMove == 1) || //Paper - Rock
+                                       (userChoice == 3 && aiMove == 2)) //Scissors - Paper
                             {
                                 winCountFun++;
-                                Console.WriteLine("You win!"); 
+                                Console.WriteLine("You win!");
                                 AiDialogue("_(:‚‹」∠)_ I lost!");
                                 Console.WriteLine("Press anything to continue...");
-                                Console.ReadLine(); 
+                                Console.ReadLine();
                                 gameOver = true;
-                            } else { //Lost
+                            } else {
+                                //Lost
                                 lostCountFun++;
-                                Console.WriteLine("You lost!"); 
+                                Console.WriteLine("You lost!");
                                 AiDialogue("♡⸜(˶˃ ᵕ ˂˶)⸝♡ I won!");
                                 Console.WriteLine("Press anything to continue...");
                                 Console.ReadLine();
