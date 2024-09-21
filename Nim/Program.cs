@@ -200,8 +200,9 @@ namespace NimConsoleApplication
                               + "Press 'C' to Confirm. Press 'Q' to go to Main Menu.");
             Console.ResetColor();
 
-            int winCountFun = 0;
-            int lostCountFun = 0;
+            int winCountFun = 0; int lostCountFun = 0;
+            int rpsCountWin = 0; int rpsCountLost = 0; //Special Event
+            
             string menuSelection = Console.ReadLine().ToUpper();
             if (menuSelection == "C") {
                 bool specialEvent = false; //Special Event trigger
@@ -213,8 +214,8 @@ namespace NimConsoleApplication
                     // If the user has won 3 times. (( THEY CANNOT PLAY AGAIN )) 
                     if (winCountFun >= 3) {
                         Console.Clear(); //Prevent double dialogue =)
-                        Console.WriteLine("You win again!");
-                        Console.WriteLine($"Current Wins: {winCountFun}");
+                        Console.WriteLine("You win again!"); 
+                        lostCountFunMenu--; //updates twice, spaghetti code, help 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("AI: (っ- ‸ - ς).. Alright, champ. You win. I put up the flag 🏳 .. \n"
                                           + "    ..  ε=ε三三  .·°՞┏(°;ᗒ﹏࣭ᗕ°)┛\n");
@@ -240,6 +241,7 @@ namespace NimConsoleApplication
 
                         nim:
                         while (!gameOver) {
+                            rpsCountWin = 0; rpsCountLost = 0; //Reset RPS counter
                             DisplayMatches(matchesCount);
                             Console.WriteLine("How many matches would you like to draw? (1-3)");
 
@@ -252,7 +254,6 @@ namespace NimConsoleApplication
                                 Console.WriteLine("Invalid input! Please enter an integer.");
                                 goto playerTurn;
                             }
-
                             switch (playerMove) {
                                 case 1:
                                 case 2:
@@ -277,16 +278,10 @@ namespace NimConsoleApplication
 
                             //AI Logic --------------------------------------------------------
 
-                            /*Special Event
-                            ---------------*/
-                            if (winCountFun >= 2 && matchesCount < 5 && specialEvent == false) {
-                                RockPaperScissors();
-                                specialEvent = true; //Makes sure this event runs only ONCE
-                            }
+                            // Special Event
+                            if (winCountFun >= 2 && matchesCount < 5) { RockPaperScissors(); }
 
-                            /*Normal Event
-                            --------------*/
-                            //else if not Special Event
+                            // Normal event (else)
                             else if (matchesCount > 0) {
                                 //Prevent AI from taking a turn if Matches = 0
                                 aiTurn = true;
@@ -310,11 +305,10 @@ namespace NimConsoleApplication
                                     gameOver = true;
                                 }
                             }
-
                             goto nim;
                         }
-
-                        //gameOver = true
+                        
+                        //gameOver = true (match game)
                         if (aiTurn == true && playerTurn == false) {
                             Console.Clear();
                             Console.WriteLine("The AI drew the last match. You win!");
@@ -335,7 +329,7 @@ namespace NimConsoleApplication
                             lostCountFun++;
                             lostCountFunMenu++;
                         }
-
+                        
                         static void DisplayMatches(int matchesCount)
                         {
                             //function to display matches. (I have prior C# experience)
@@ -346,7 +340,6 @@ namespace NimConsoleApplication
                                 Console.WriteLine($"Matches left: ({matchesCount})");
                             }
                         }
-
                         static void AiDialogue(string message)
                         {
                             Console.ForegroundColor = ConsoleColor.Green; // AI dialogue color
@@ -354,13 +347,17 @@ namespace NimConsoleApplication
                             Console.ResetColor();
                         }
 
-                        void RockPaperScissors() //I use + and \n here to make the code more readable.
+                        void RockPaperScissors() //I use + and \n here to make the code more readable. 
                         {
                             AiDialogue($"Okay STOP! ୧(๑•̀ᗝ•́)૭! You've won {winCountFun} times already!\n" +
                                        $"Not this time, you rascal. Since you're clearly cheating.. Let's actually play a game by chance.\n" +
                                        $"Rock Paper Scissors! You have no choice..\n");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("You can only win if you have 2 more wins than the AI\n" +
+                                              "If the AI gets 4 total wins, you automatically lose."); Console.ResetColor();
                             
-                            DrawGoTo: //This art took way too long to make
+                            resetRPS:
+                            Console.WriteLine($"Current Wins: {rpsCountWin} : Current Losses: {rpsCountLost}\n");
                             AiDialogue(@"Pick your choice! 
 1) Rock  2) Paper  3) Scissors
   _.._     _____       ()() 
@@ -369,7 +366,6 @@ namespace NimConsoleApplication
 
                             int userChoice = 0;
                             bool validInput = false;
-
                             //I got unhandled exceptions. I tried TryParse and other statements, but needed a --
                             while (!validInput) // -- While loop to make input is correct after reading the lines after
                             {
@@ -380,30 +376,43 @@ namespace NimConsoleApplication
                                     Console.WriteLine("Invalid input! Please enter a number between 1 and 3.");
                                 }
                             }
-
+                                
                             int aiMove = Ai.Next(1, 4);
                             if (userChoice == aiMove) {
                                 Console.WriteLine("It's a draw!");
                                 AiDialogue("Hah! ৻(  •̀ ᗜ •́  ৻) I saw that one coming!");
-                                goto DrawGoTo;
+                                goto resetRPS;
                             } else if ((userChoice == 1 && aiMove == 3) || //Rock - Scissors
                                        (userChoice == 2 && aiMove == 1) || //Paper - Rock
                                        (userChoice == 3 && aiMove == 2)) //Scissors - Paper
                             {
-                                winCountFun++;
+                                rpsCountWin++;
                                 Console.WriteLine("You win!");
                                 AiDialogue("_(:‚‹」∠)_ I lost!");
                                 Console.WriteLine("Press anything to continue...");
                                 Console.ReadLine();
-                                gameOver = true;
+                                
+                                if (rpsCountWin >= rpsCountLost +2) { //Only win if you have 2 more wins
+                                    winCountFunMenu++; //fixes menu count after exiting loop 
+                                    winCountFun++; 
+                                    gameOver = true;
+                                    return; //exit Event
+                                }
+                                goto resetRPS;
                             } else {
                                 //Lost
-                                lostCountFun++;
+                                rpsCountLost++;
                                 Console.WriteLine("You lost!");
                                 AiDialogue("♡⸜(˶˃ ᵕ ˂˶)⸝♡ I won!");
                                 Console.WriteLine("Press anything to continue...");
                                 Console.ReadLine();
-                                gameOver = true;
+                                
+                                if (rpsCountLost == 4) { //Since its the PLAYER TURN inside of the NIM loop,
+                                    //rpsLoss = true;
+                                    gameOver = true; //we cannot count LOSS here
+                                    return; //exit Event
+                                } 
+                                goto resetRPS;
                             }
                         }
                     }
