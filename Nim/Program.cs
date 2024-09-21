@@ -215,6 +215,7 @@ namespace NimConsoleApplication
                     if (winCountFun >= 3) {
                         Console.Clear(); //Prevent double dialogue =)
                         Console.WriteLine("You win again!"); 
+                        Console.WriteLine($"Current Total Wins: {winCountFun}");
                         lostCountFunMenu--; //updates twice, spaghetti code, help 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("AI: (っ- ‸ - ς).. Alright, champ. You win. I put up the flag 🏳 .. \n"
