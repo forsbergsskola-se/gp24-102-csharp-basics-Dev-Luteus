@@ -7,10 +7,8 @@ namespace NimConsoleApplication
 {
     public static class Program
     {
-        private static int winCountBasicMenu = 0;
-        private static int lostCountBasicMenu = 0;
-        private static int winCountFunMenu = 0;
-        private static int lostCountFunMenu = 0;
+        private static int winCountBasicMenu = 0; private static int lostCountBasicMenu = 0;
+        private static int winCountFunMenu = 0; private static int lostCountFunMenu = 0;
 
         static void Main()
         {
@@ -38,38 +36,30 @@ namespace NimConsoleApplication
                 foreach (string menuLine in menuLines) {
                     if (menuLine.Contains("Please select an option")) {
                         Console.ForegroundColor = ConsoleColor.Magenta;
+                        
                     } else if (menuLine.Contains("<<  | [A] - Nim Game (basic) |  >>")) {
                         Console.ForegroundColor = ConsoleColor.Yellow;
+                        
                     } else if (menuLine.Contains("<<  | [B] - Nim Game (fun)   |  >>")) {
                         Console.ForegroundColor = ConsoleColor.Green;
 
                     } else if (menuLine.Contains("¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨") ||
-                               menuLine.Contains("__________________________")) {
-                        Console.ResetColor();
-                    } else if (menuLine.Contains($"| Wins: {winCountBasicMenu}     Loses: {lostCountBasicMenu}   |") ||
-                               menuLine.Contains($"| Wins: {winCountFunMenu}     Loses: {lostCountFunMenu}   |")) {
-                        //This is *more* readable as a One-Line than a Multiple-line statement
-                        Console.ResetColor();
-                    } else //Colour the giant Main Menu ASCII text
+                               menuLine.Contains("__________________________") || 
+                               menuLine.Contains($"| Wins: {winCountBasicMenu}     Loses: {lostCountBasicMenu}   |") ||
+                               menuLine.Contains($"| Wins: {winCountFunMenu}     Loses: {lostCountFunMenu}   |")) 
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.ResetColor();
+                    } else {   
+                        Console.ForegroundColor = ConsoleColor.Red; // ASCII ART
                     }
-
-                    Console.WriteLine(menuLine); //Print the newly coloured Menu. NECESSARY.
-                } //Console.WriteLine(mainMenu) no longer necessary
-
+                    Console.WriteLine(menuLine); //Print the newly coloured Menu.
+                } 
                 Console.ResetColor();
 
-                string
-                    menuSelection =
-                        Console.ReadLine().ToUpper(); //Read menuLine. Console.Readline returns string, change to var?
+                string menuSelection = Console.ReadLine().ToUpper(); //Read menuLine. Console.Readline returns string, change to var?
                 switch (menuSelection) {
-                    case "A":
-                        BasicNim();
-                        break;
-                    case "B":
-                        FunNim();
-                        break;
+                    case "A": BasicNim(); break;
+                    case "B": FunNim(); break;
                     case "Q":
                         exitProgram = true;
                         break;
@@ -79,7 +69,6 @@ namespace NimConsoleApplication
                 }
             }
         }
-
         static void BasicNim()
         {
             bool backToMenu = false;
@@ -397,7 +386,7 @@ namespace NimConsoleApplication
                                     winCountFunMenu++; //fixes menu count after exiting loop 
                                     winCountFun++; 
                                     gameOver = true;
-                                    return; //exit Event
+                                    return;
                                 }
                                 goto resetRPS;
                             } else {
@@ -408,10 +397,9 @@ namespace NimConsoleApplication
                                 Console.WriteLine("Press anything to continue...");
                                 Console.ReadLine();
                                 
-                                if (rpsCountLost == 4) { //Since its the PLAYER TURN inside of the NIM loop,
-                                    //rpsLoss = true;
-                                    gameOver = true; //we cannot count LOSS here
-                                    return; //exit Event
+                                if (rpsCountLost == 4) { //Since PLAYER turn inside NIM loop,
+                                    gameOver = true; //we cannot count funCount LOSS here
+                                    return;
                                 } 
                                 goto resetRPS;
                             }
