@@ -100,7 +100,7 @@ namespace NimConsoleApplication
                             Console.WriteLine("Invalid input! Please enter an integer.");
                             goto playerTurn;
                         }
-
+                        
                         switch (playerMove) {
                             case 1:
                             case 2:
@@ -133,7 +133,6 @@ namespace NimConsoleApplication
                                 gameOver = true;
                             }
                         }
-
                         goto nim;
                     }
 
@@ -305,19 +304,22 @@ namespace NimConsoleApplication
                                     aiDialogue("Hmm.. (っº - ºς).." +
                                                "Let me think..");
                                 }
-                                //ai Move + Lose ----------------------------------------------
+                                /* AI Move + Lose ------------------------------------------------------------------
+                                 * I want the AI to be more difficult to beat in-before certain winning conditions.
+                                 * The AI should understand to leave 1 match for the player if there are 2 matches.
+                                 * Otherwise, have a 40% chance to blunder.              60% 3 : 40% 1 */
+                                
                                 int aiMove = ai.Next(1, 4); //default
-                                
-                                /* I want the ai to be more difficult to beat in-before certain winning conditions.
-                                 * The ai should understand to leave 1 match for the player if there are 3 or 2 matches.
-                                 */
-                                
-                                if (matchesCount == 4) { aiMove = ai.Next(1, 100) < 80 ? 3 : 1; } // 80% 3, 20% 1
-                                else if (matchesCount == 3) { aiMove = 2; }
+                                if (matchesCount == 4)      { aiMove = ai.Next(1, 100) < 60 ? 3 : 1; } 
+                                else if (matchesCount == 3) { aiMove = ai.Next(1, 100) < 60 ? 2 : 1; }
                                 else if (matchesCount == 2) { aiMove = 1; }
+                                
                                 Console.WriteLine("The ai draws " + aiMove + " matches.");
                                 matchesCount -= aiMove;
-    
+                                
+                                if ((matchesCount == 4 && aiMove == 1) || (matchesCount == 3 && aiMove == 1)) {
+                                    aiDialogue("WAIT! NOOO! I BLUNDERED!! ｡°(°ᗒ﹏࣭ᗕ°)°｡｡"); 
+                                }
                                 if (matchesCount <= 0 && aiTurn == true) {
                                     gameOver = true;
                                 }
