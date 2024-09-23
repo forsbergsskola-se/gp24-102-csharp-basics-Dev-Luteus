@@ -216,6 +216,22 @@ namespace NimConsoleApplication
                         if (winMenuSelection == "Q") {
                             backToMenu = true;
                         }
+                    } else if (lostCountFun >= 3) {
+                        Console.Clear(); //Prevent double dialogue =)
+                        Console.WriteLine("You lost!"); 
+                        Console.WriteLine($"Current Total Wins: {winCountFun}. Current Total Losses: {lostCountFun} \n");
+                        
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("AI: 𝄞: ♪♬ ~(˘▾˘~) ♬♫ (~˘▾˘)~ ♪♪♫ .. ♡⸜(｡˃ ᵕ ˂ )⸝♡\n"
+                                          + ".. (◡ ‿ ◡｡) Well, it was only natural, I am a genius after all (•ᴗ<˶)✧₊ ⊹\n" 
+                                          + "You're welcome to challenge me anytime (*˘︶˘*).. Please come again ♡ \n");
+                        Console.ResetColor();
+                        Console.WriteLine("You Lost! Press 'Q' to go back to the Main Menu.");
+
+                        string winMenuSelection = Console.ReadLine().ToUpper();
+                        if (winMenuSelection == "Q") {
+                            backToMenu = true;
+                        }
                     }
                     //If the user did not win 3 times yet    
                     else {
