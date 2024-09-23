@@ -191,13 +191,13 @@ namespace NimConsoleApplication
 
             int winCountFun = 0; int lostCountFun = 0;
             int rpsCountWin = 0; int rpsCountLost = 0; //Special Event
+            bool backToMenu = false;
             
             string menuSelection = Console.ReadLine().ToUpper();
             if (menuSelection == "C") {
                 bool specialEvent = false; //Special Event trigger
 
                 // START GAME
-                bool backToMenu = false;
                 while (!backToMenu) {
 
                     // If the user has won 3 times. (( THEY CANNOT PLAY AGAIN )) 
@@ -408,7 +408,7 @@ namespace NimConsoleApplication
                 }
             } else if (menuSelection == "Q") {
                 Console.Clear();
-                Main();
+                backToMenu = true;
             } else {
                 Console.WriteLine("Invalid choice! Please select one of the appropriate options.");
             }
