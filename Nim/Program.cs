@@ -167,21 +167,13 @@ namespace NimConsoleApplication
 
         static void FunNim()
         {
-            
-            /*  INTELLIGENT ai OVERHAUL
-             *  IDEA:
-             *  If matchcount is odd, ai should be more inclined to pick 2.
-             *  If matchount is even, ai should be more inclined to pick 1. 
-             */
-            
             Console.OutputEncoding = Encoding.UTF8; //Accept otherwise un-recognised characters
             Console.WriteLine();
-            Console.WriteLine(@"You're inside of Nim Game (fun)!");
-
+            Console.WriteLine("You're inside of Nim Game (fun)!");
+            
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Your GOAL is to win against the ai 3 times! If you lose 3 times, the ai wins.");
+            Console.WriteLine("Your GOAL is to win against the ai 3 times! If you lose 3 times, the ai wins.\n");
             Console.ResetColor();
-            Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("You cannot return to the Main Menu until you've won 3 times.");
@@ -202,8 +194,7 @@ namespace NimConsoleApplication
 
                 // START GAME
                 while (!backToMenu) {
-
-                    // If the user has won 3 times. (( THEY CANNOT PLAY AGaiN )) 
+                    // If the user has won 3 times.
                     if (winCountFun >= 3) {
                         Console.Clear(); //Prevent double dialogue =)
                         Console.WriteLine("You win again!"); 
@@ -215,11 +206,11 @@ namespace NimConsoleApplication
                         Console.ResetColor();
                         Console.WriteLine("You Won! Press 'Q' to go back to the Main Menu.");
 
-                        string winMenuSelection = Console.ReadLine().ToUpper();
+                        string winMenuSelection = Console.ReadLine()!.ToUpper();
                         if (winMenuSelection == "Q") {
                             backToMenu = true;
                         }
-                    } else if (lostCountFun >= 3) {
+                    } else if (lostCountFun >= 3) { //If user lost 3 times
                         Console.Clear(); //Prevent double dialogue =)
                         Console.WriteLine("You lost!"); 
                         Console.WriteLine($"Current Total Wins: {winCountFun}. Current Total Losses: {lostCountFun} \n");
@@ -235,9 +226,7 @@ namespace NimConsoleApplication
                         if (winMenuSelection == "Q") {
                             backToMenu = true;
                         }
-                    }
-                    //If the user did not win 3 times yet    
-                    else {
+                    } else { //User didn't win/lose 3 times 
                         Console.WriteLine($"You've won {winCountFun} times. You've lost {lostCountFun} times.");
                         Console.WriteLine("");
 
@@ -271,14 +260,14 @@ namespace NimConsoleApplication
                                         Console.WriteLine($"You can only draw up to {matchesCount} matches.");
                                         goto playerTurn;
                                     }
-
+                                    Console.Clear();
+                                    Console.WriteLine($"You drew {playerMove} matches!");
                                     matchesCount -= playerMove; //update
                                     break;
                                 default:
                                     Console.WriteLine("Please enter a valid amount! (1-3)");
                                     goto playerTurn;
                             }
-
                             DisplayMatches(matchesCount);
                             if (matchesCount <= 0 && playerTurn == true) {
                                 gameOver = true;
@@ -307,12 +296,19 @@ namespace NimConsoleApplication
                                 /* AI Move + Lose ------------------------------------------------------------------
                                  * I want the AI to be more difficult to beat in-before certain winning conditions.
                                  * The AI should understand to leave 1 match for the player if there are 2 matches.
-                                 * Otherwise, have a 40% chance to blunder.              60% 3 : 40% 1 */
+                                 * Otherwise, have a 40% chance to blunder. (It is beatable without blunder)
+                                 * With the reversed rules, it is IMPOSSIBLE to make the AI unbeatable. */
                                 
-                                int aiMove = ai.Next(1, 4); //default
+                                int aiMove = ai.Next(1, 4); // Default
+                                
+                                // Ai Win Pos
+                                if (matchesCount % 4 == 0) { aiMove = ai.Next(1, 100) < 50 ? 3 : 1; }
+                                if (matchesCount % 4 == 2) { aiMove = 1; }
+                                // Ai Lose pos (try to correct to win).
+                                if ((matchesCount % 4 == 1) || (matchesCount % 4 == 3)) { aiMove = 2; } 
+                                //                                                       40% chance to blunder
                                 if (matchesCount == 4)      { aiMove = ai.Next(1, 100) < 60 ? 3 : 1; } 
                                 else if (matchesCount == 3) { aiMove = ai.Next(1, 100) < 60 ? 2 : 1; }
-                                else if (matchesCount == 2) { aiMove = 1; }
                                 
                                 Console.WriteLine("The ai draws " + aiMove + " matches.");
                                 matchesCount -= aiMove;
@@ -398,6 +394,7 @@ namespace NimConsoleApplication
                                 
                             int aiMove = ai.Next(1, 4);
                             if (userChoice == aiMove) {
+                                Console.Clear();
                                 Console.WriteLine("It's a draw!");
                                 aiDialogue("Hah! ৻(  •̀ ᗜ •́  ৻) I saw that one coming!");
                                 goto resetRPS;
@@ -406,10 +403,9 @@ namespace NimConsoleApplication
                                        (userChoice == 3 && aiMove == 2)) //Scissors - Paper
                             {
                                 rpsCountWin++;
+                                Console.Clear();
                                 Console.WriteLine("You win!");
                                 aiDialogue("_(:‚‹」∠)_ I lost!");
-                                Console.WriteLine("Press anything to continue...");
-                                Console.ReadLine();
                                 
                                 if (rpsCountWin >= rpsCountLost +2) { //Only win if you have 2 more wins
                                     _winCountFunMenu++; //fixes menu count after exiting loop 
@@ -421,10 +417,9 @@ namespace NimConsoleApplication
                             } else {
                                 //Lost
                                 rpsCountLost++;
+                                Console.Clear();
                                 Console.WriteLine("You lost!");
                                 aiDialogue("♡⸜(˶˃ ᵕ ˂˶)⸝♡ I won!");
-                                Console.WriteLine("Press anything to continue...");
-                                Console.ReadLine();
                                 
                                 if (rpsCountLost == 4) { //Since PLAYER turn inside NIM loop,
                                     gameOver = true; //we cannot count funCount LOSS here
