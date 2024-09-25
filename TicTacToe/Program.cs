@@ -2,15 +2,15 @@
 
 public class TicTacToe()
 {   
-    static int[,] cells = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} }; //static to call inside static methods/functions
+    static string[,] cells = { {"1", "2", "3"}, {"4", "5", "6"}, {"7", "8", "9"} }; //static to call inside static methods/functions
     static void Main() {
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Welcome to Tic-Tac-Toe \n" + "Whenever you're ready, press anything to continue! ...\n");
-        Console.ReadLine();
-        Board();
+        Console.ResetColor(); Console.ReadLine(); Console.Clear();
+        PlayGame();
     }
     static void Board()
     {
-        Console.Clear();
         for (int rowNumber = 0; rowNumber < cells.GetLength(0); rowNumber++) 
         {
             for (int cellHeight = 0; cellHeight < 3; cellHeight++) {
@@ -39,5 +39,45 @@ public class TicTacToe()
             }
         }
     }
-    
+
+    static void PlayGame()
+    {
+        while (true)
+        {   // Update Board
+            Board(); 
+            Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("Which number do you pick?"); 
+            string playerNumber = Console.ReadLine(); Console.ResetColor();
+            
+            if (ValidNumber(playerNumber)) {
+                Console.Clear();
+                UpdateBoard(playerNumber);
+            } else {
+                Console.Clear(); Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid move. Please try again."); Console.ResetColor();
+            }
+        }
+    }
+    static bool ValidNumber(string playerNumber)       // Bool to return correct value
+    {                                                  // I want to check if playerNumber matches any string in the Array
+        foreach (string cell in cells) {
+            if (cell == playerNumber) { return true; } // If playerNumber is valid, return it.
+        }
+        return false;                                  // Else, invalid.
+    }
+
+    static void UpdateBoard(string playerNumber)
+    {
+        // I want to find the appropriate cell on the board, and update the number to 'X' 
+        for (int rowNumber = 0; rowNumber < cells.GetLength(0); rowNumber++)
+        {
+            for (int colNumber = 0; colNumber < cells.GetLength(1); colNumber++)
+            {
+                if (cells[rowNumber, colNumber] == playerNumber)
+                {
+                    cells[rowNumber, colNumber] = "X";  // Change to 'X'
+                    return;                             // Return to PlayGame() after update
+                }
+            }
+        }
+    }
 }
