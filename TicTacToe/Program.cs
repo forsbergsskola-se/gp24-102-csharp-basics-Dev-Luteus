@@ -1,4 +1,5 @@
-﻿public class TicTacToe
+﻿using System.Text;
+public class TicTacToe
 {   
     static string[,] cells = { {"1", "2", "3"}, {"4", "5", "6"}, {"7", "8", "9"} }; //static to call inside static methods/functions
     static void Main() {
@@ -39,6 +40,7 @@
     }
     static void PlayGame()
     {
+        Console.OutputEncoding = Encoding.UTF8;
         Random AI = new Random(); string aiNumber;
         
         while (true)
@@ -50,7 +52,7 @@
             // Player --------
             if (ValidNumber(playerNumber)) {
                 Console.Clear();
-                UpdateBoard(playerNumber, "X");
+                UpdateBoard(playerNumber, "✖");
             } else {
                 Console.Clear(); Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Invalid move. Please try again."); Console.ResetColor();
@@ -62,7 +64,7 @@
             
             do { int aiMove = AI.Next(1, 10); aiNumber = aiMove.ToString(); } //Generate until while = true
             while (!ValidNumber(aiNumber)); //not false = true  :                       : Repeat until t
-            UpdateBoard(aiNumber, "O");
+            UpdateBoard(aiNumber, "⬤");
         }
     }
     static bool ValidNumber(string anyString)       // Bool to return correct value. anyString (placeholder name)
@@ -81,7 +83,7 @@
             {
                 if (cells[rowNumber, colNumber] == anyString)
                 {
-                    cells[rowNumber, colNumber] = "X";  // Change to 'X'
+                    cells[rowNumber, colNumber] = anySymbol;  // Change to 'X'
                     return;                             // Return to PlayGame() after update
                 }
             }
