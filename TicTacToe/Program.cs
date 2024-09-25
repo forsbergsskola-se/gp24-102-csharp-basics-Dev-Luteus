@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-public class TicTacToe
+﻿public class TicTacToe
 {   
     static string[,] cells = { {"1", "2", "3"}, {"4", "5", "6"}, {"7", "8", "9"} }; //static to call inside static methods/functions
     static void Main() {
@@ -39,32 +37,32 @@ public class TicTacToe
             }
         }
     }
-
     static void PlayGame()
     {
+        Random AI = new Random(); string aiNumber;
+        
         while (true)
         {   // Update Board
             Board(); 
             Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("Which number do you pick?"); 
             string playerNumber = Console.ReadLine(); Console.ResetColor();
             
-            // Player
+            // Player --------
             if (ValidNumber(playerNumber)) {
                 Console.Clear();
-                UpdateBoard(playerNumber);
+                UpdateBoard(playerNumber, "X");
             } else {
                 Console.Clear(); Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Invalid move. Please try again."); Console.ResetColor();
                 continue; // TIL about Continue. If Invalid, go back to beginning ( before AI makes a move )
             }
             
-            // AI
-            Random AI = new Random();
-            int aiMove = AI.Next(1, 10); string aiNumber = aiMove.ToString();
-            if (ValidNumber(aiNumber)) {
-                Console.Clear();
-                UpdateBoard(aiNumber);
-            } 
+            // AI ------------
+            // I want to make sure the AI picks a number that hasn't been chosen
+            
+            do { int aiMove = AI.Next(1, 10); aiNumber = aiMove.ToString(); } //Generate until while = true
+            while (!ValidNumber(aiNumber)); //not false = true  :                       : Repeat until t
+            UpdateBoard(aiNumber, "O");
         }
     }
     static bool ValidNumber(string anyString)       // Bool to return correct value. anyString (placeholder name)
@@ -74,7 +72,7 @@ public class TicTacToe
         }
         return false;                               // Else, invalid.
     }
-    static void UpdateBoard(string anyString)
+    static void UpdateBoard(string anyString, string anySymbol)
     {
         // I want to find the appropriate cell on the board, and update the number to 'X' 
         for (int rowNumber = 0; rowNumber < cells.GetLength(0); rowNumber++)
