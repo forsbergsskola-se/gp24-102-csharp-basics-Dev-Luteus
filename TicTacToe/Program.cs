@@ -48,9 +48,9 @@ public class TicTacToe
                 Console.Clear();
                 UpdateBoard(playerNumber, "✖");
                 if (CheckWin("✖")) {
-                    Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("You won!");
-                    Console.WriteLine("Press any key to continue..."); Console.ReadLine();
-                    Console.ResetColor(); Console.Clear();
+                    Board();
+                    Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("\nYou won!"); Console.ResetColor(); 
+                    Console.WriteLine("Press any key to continue..."); Console.ReadLine(); Console.Clear();
                     break;
                 }
             } else {
@@ -68,13 +68,13 @@ public class TicTacToe
                 aiNumber = aiMove.ToString();
             }                                   // Generate until while = true
             while (!ValidNumber(aiNumber));     // not false = true  :                       : Repeat until true
-            UpdateBoard(aiNumber, "⬤");
             
+            UpdateBoard(aiNumber, "⬤");
             if (CheckWin("⬤")) {      // Check After board update
-                    Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("You Lost!");
-                    Console.WriteLine("Press any key to continue..."); Console.ReadLine();
-                    Console.ResetColor(); Console.Clear();
-                    break;
+                Board();
+                Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("\nYou Lost!"); Console.ResetColor(); 
+                    Console.WriteLine("Press any key to continue..."); Console.ReadLine(); Console.Clear();
+                break;
             } 
         }
     }
@@ -125,7 +125,27 @@ public class TicTacToe
         if (cells[0, 2] == sameString && cells[1, 1] == sameString && cells[2, 0] == sameString) {
             return true; 
         }
-        // Else
+        /* I want to loop through the columns and rows, to see if all cells are NOT occupied by a player symbol.
+         * If all cells are NOT occupied, it means the game is NOT a draw! So set fullBoard = false.
+         * Assume fullBoard = true, because if the loop breaks, it means all cells ARE occupied, meaning it is a draw */
+       
+        bool fullBoard = true;          // Assume True
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) { 
+                if (cells[row, col] != "✖" && cells[row, col] != "⬤") { 
+                    fullBoard = false;  // Set to False
+                    break;              // Otherwise, break out (it's True)
+                }
+            }
+        }
+        if (fullBoard == true) { // Draw
+            Console.Clear(); 
+            Board(); Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nIt's a draw!"); Console.ResetColor();
+            Console.WriteLine("Press any key to continue..."); Console.ReadLine();
+            Environment.Exit(0); // End the game
+        }
+        // Else (no win, lose or draw)
         return false;
     }
 }
