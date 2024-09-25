@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-public class TicTacToe()
+public class TicTacToe
 {   
     static string[,] cells = { {"1", "2", "3"}, {"4", "5", "6"}, {"7", "8", "9"} }; //static to call inside static methods/functions
     static void Main() {
@@ -48,31 +48,40 @@ public class TicTacToe()
             Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("Which number do you pick?"); 
             string playerNumber = Console.ReadLine(); Console.ResetColor();
             
+            // Player
             if (ValidNumber(playerNumber)) {
                 Console.Clear();
                 UpdateBoard(playerNumber);
             } else {
                 Console.Clear(); Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Invalid move. Please try again."); Console.ResetColor();
+                continue; // TIL about Continue. If Invalid, go back to beginning ( before AI makes a move )
             }
+            
+            // AI
+            Random AI = new Random();
+            int aiMove = AI.Next(1, 10); string aiNumber = aiMove.ToString();
+            if (ValidNumber(aiNumber)) {
+                Console.Clear();
+                UpdateBoard(aiNumber);
+            } 
         }
     }
-    static bool ValidNumber(string playerNumber)       // Bool to return correct value
-    {                                                  // I want to check if playerNumber matches any string in the Array
+    static bool ValidNumber(string anyString)       // Bool to return correct value. anyString (placeholder name)
+    {                                               // I want to check if playerNumber matches any string in the Array
         foreach (string cell in cells) {
-            if (cell == playerNumber) { return true; } // If playerNumber is valid, return it.
+            if (cell == anyString) { return true; } // If anyString is valid, return it. (player string || AI string)
         }
-        return false;                                  // Else, invalid.
+        return false;                               // Else, invalid.
     }
-
-    static void UpdateBoard(string playerNumber)
+    static void UpdateBoard(string anyString)
     {
         // I want to find the appropriate cell on the board, and update the number to 'X' 
         for (int rowNumber = 0; rowNumber < cells.GetLength(0); rowNumber++)
         {
             for (int colNumber = 0; colNumber < cells.GetLength(1); colNumber++)
             {
-                if (cells[rowNumber, colNumber] == playerNumber)
+                if (cells[rowNumber, colNumber] == anyString)
                 {
                     cells[rowNumber, colNumber] = "X";  // Change to 'X'
                     return;                             // Return to PlayGame() after update
