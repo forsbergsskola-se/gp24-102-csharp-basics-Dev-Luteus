@@ -3,11 +3,18 @@
 public class TicTacToe
 {
     static string[,] cells = { { "1", "2", "3" }, { "4", "5", "6" }, { "7", "8", "9" } }; //static to call inside static methods/functions
-    static void Main() {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Welcome to Tic-Tac-Toe \n" + "Whenever you're ready, press anything to continue! ...\n");
-        Console.ResetColor(); Console.ReadLine(); Console.Clear();
-        PlayGame();
+    private static int winCounter = 0; private static int loseCounter = 0;
+    static void Main()
+    {
+        bool exitProgram = false;
+        while (!exitProgram) {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Welcome to Tic-Tac-Toe \n" + "Whenever you're ready, press anything to continue! ...");
+            Console.ResetColor(); Console.Write($"Win Counter: {winCounter}  :  Lose Counter: {loseCounter}\n"); 
+            Console.ReadLine(); Console.Clear();
+            cells = new string[,] { { "1", "2", "3" }, { "4", "5", "6" }, { "7", "8", "9" } }; //reset after round
+            PlayGame();
+        }
     }
     static void Board() {
         for (int rowNumber = 0; rowNumber < cells.GetLength(0); rowNumber++) {
@@ -48,6 +55,7 @@ public class TicTacToe
                 Console.Clear();
                 UpdateBoard(playerNumber, "✖");
                 if (CheckWin("✖")) {
+                    winCounter++;
                     Board();
                     Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("\nYou won!"); Console.ResetColor(); 
                     Console.WriteLine("Press any key to continue..."); Console.ReadLine(); Console.Clear();
@@ -71,6 +79,7 @@ public class TicTacToe
             
             UpdateBoard(aiNumber, "⬤");
             if (CheckWin("⬤")) {      // Check After board update
+                loseCounter++;
                 Board();
                 Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("\nYou Lost!"); Console.ResetColor(); 
                     Console.WriteLine("Press any key to continue..."); Console.ReadLine(); Console.Clear();
