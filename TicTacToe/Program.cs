@@ -8,12 +8,24 @@ public class TicTacToe
     {
         bool exitProgram = false;
         while (!exitProgram) {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Welcome to Tic-Tac-Toe \n" + "Whenever you're ready, press anything to continue! ...");
-            Console.ResetColor(); Console.Write($"Win Counter: {winCounter}  :  Lose Counter: {loseCounter}\n"); 
-            Console.ReadLine(); Console.Clear();
-            cells = new string[,] { { "1", "2", "3" }, { "4", "5", "6" }, { "7", "8", "9" } }; //reset after round
-            PlayGame();
+            Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("Welcome to Tic-Tac-Toe");
+            Console.ForegroundColor = ConsoleColor.Black; Console.Write($"Win Counter: {winCounter}  :  Lose Counter: {loseCounter}\n");
+            Console.ForegroundColor = ConsoleColor.Green; 
+            Console.WriteLine("\n[A] Play Game\n"
+                              + "[Q] Quit\n");
+            Console.ResetColor(); 
+            
+            string userInput = Console.ReadLine()!.ToUpper();
+            if (userInput == "Q") {
+                exitProgram = true;
+            } else if (userInput == "A") {
+                Console.Clear();
+                cells = new string[,] { { "1", "2", "3" }, { "4", "5", "6" }, { "7", "8", "9" } }; //reset after round
+                PlayGame();
+            } else {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("Invalid Input! Please select a valid option.");
+            }
         }
     }
     static void Board() {
