@@ -8,12 +8,9 @@ public class TicTacToe
     {
         bool exitProgram = false;
         while (!exitProgram) {
-            Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("Welcome to Tic-Tac-Toe");
-            Console.ForegroundColor = ConsoleColor.Black; Console.Write($"Win Counter: {winCounter}  :  Lose Counter: {loseCounter}\n");
-            Console.ForegroundColor = ConsoleColor.Green; 
-            Console.WriteLine("\n[A] Play Game\n"
-                              + "[Q] Quit\n");
-            Console.ResetColor(); 
+            Console.WriteLine("\x1b[92mWelcome to Tic-Tac-Toe\x1b[39m"); Console.Write($"Win Counter: {winCounter}  :  Lose Counter: {loseCounter}\n");
+            Console.WriteLine("\n\x1b[92m[A] Play Game\n"
+                              + "[Q] Quit\x1b[39m\n");
             
             string userInput = Console.ReadLine()!.ToUpper();
             if (userInput == "Q") {
@@ -24,7 +21,7 @@ public class TicTacToe
                 PlayGame();
             } else {
                 Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("Invalid Input! Please select a valid option.");
+                Console.WriteLine("\x1b[91mInvalid Input! Please select a valid option.\x1b[39m");
             }
         }
     }
@@ -59,8 +56,7 @@ public class TicTacToe
         while (true) {
             // Update Board
             Board();
-            Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("Which number do you pick?");
-            string playerNumber = Console.ReadLine(); Console.ResetColor();
+            Console.WriteLine("\x1b[92mWhich number do you pick?\x1b[39m"); string playerNumber = Console.ReadLine();
 
             // Player --------
             if (ValidNumber(playerNumber)) {
@@ -69,15 +65,12 @@ public class TicTacToe
                 if (CheckWin("✖")) {
                     winCounter++;
                     Board();
-                    Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("\nYou won!"); Console.ResetColor(); 
-                    Console.WriteLine("Press any key to continue..."); Console.ReadLine(); Console.Clear();
+                    Console.WriteLine("\n\x1b[92mYou won!\x1b[39m"); Console.WriteLine("Press any key to continue..."); 
+                    Console.ReadLine(); Console.Clear();
                     break;
                 }
             } else {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Invalid move. Please try again.");
-                Console.ResetColor();
+                Console.Clear(); Console.WriteLine("\x1b[91mInvalid move. Please try again.\x1b[39m");
                 continue; // TIL about Continue. If Invalid, go back to beginning ( before AI makes a move )
             }
 
@@ -93,13 +86,12 @@ public class TicTacToe
             if (CheckWin("⬤")) {      // Check After board update
                 loseCounter++;
                 Board();
-                Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("\nYou Lost!"); Console.ResetColor(); 
-                    Console.WriteLine("Press any key to continue..."); Console.ReadLine(); Console.Clear();
+                Console.WriteLine("\n\x1b[91mYou Lost!\x1b[39m"); Console.WriteLine("Press any key to continue..."); 
+                Console.ReadLine(); Console.Clear();
                 break;
             } 
         }
     }
-
     static bool ValidNumber(string anyString) // Bool to return correct value. anyString (placeholder name)
     {
         // I want to check if playerNumber matches any string in the Array
@@ -160,11 +152,9 @@ public class TicTacToe
             }
         }
         if (fullBoard == true) { // Draw
-            Console.Clear(); 
-            Board(); Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\nIt's a draw!"); Console.ResetColor();
-            Console.WriteLine("Press any key to continue..."); Console.ReadLine();
-            Environment.Exit(0); // End the game
+            Console.Clear(); Board();
+            Console.WriteLine("\n\x1b[93mIt's a draw!\x1b[39m"); Console.WriteLine("Press any key to continue..."); 
+            Console.ReadLine(); Environment.Exit(0); // End the game
         }
         // Else (no win, lose or draw)
         return false;
