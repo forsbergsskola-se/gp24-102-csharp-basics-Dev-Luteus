@@ -1,14 +1,14 @@
 ﻿using System.Text;
-
 public class TicTacToe
 {
     static string[,] cells = { { "1", "2", "3" }, { "4", "5", "6" }, { "7", "8", "9" } }; //static to call inside static methods/functions
-    private static int winCounter = 0; private static int loseCounter = 0;
+    private static int winCounter = 0; private static int loseCounter = 0; private static int drawCounter = 0;
     static void Main()
     {
         bool exitProgram = false;
         while (!exitProgram) {
-            Console.WriteLine("\x1b[92mWelcome to Tic-Tac-Toe\x1b[39m"); Console.Write($"Win Counter: {winCounter}  :  Lose Counter: {loseCounter}\n");
+            Console.WriteLine("\x1b[92mWelcome to Tic-Tac-Toe\x1b[39m"); 
+            Console.Write($"Win Counter: {winCounter}  :  Lose Counter: {loseCounter}  :  Draw Counter: {drawCounter}\n");
             Console.WriteLine("\n\x1b[92m[A] Play Game\n"
                               + "[Q] Quit\x1b[39m\n");
             
@@ -73,14 +73,38 @@ public class TicTacToe
                 Console.Clear(); Console.WriteLine("\x1b[91mInvalid move. Please try again.\x1b[39m");
                 continue; // TIL about Continue. If Invalid, go back to beginning ( before AI makes a move )
             }
-
+            // Draw ------------------
+            /* I want to loop through the columns and rows, to see if all cells are NOT occupied by a player symbol.
+             * If all cells are NOT occupied, it means the game is NOT a draw! So set fullBoard = false.
+             * Assume fullBoard = true, because if the loop breaks, it means all cells ARE occupied, meaning it is a draw */
+           
+            bool fullBoard = true;          // Assume True
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) { 
+                    if (cells[row, col] != "✖" && cells[row, col] != "⬤") { 
+                        fullBoard = false;  // Set to False
+                        break;              // Otherwise, break out (it's True)
+                    }
+                }
+            }
+            if (fullBoard == true) { // Draw
+                Board(); drawCounter++;
+                Console.WriteLine("\n\x1b[93mIt's a draw!\x1b[39m"); Console.WriteLine("Press any key to continue..."); 
+                Console.ReadLine(); Console.Clear(); break;
+            }
+            
             // AI ------------
+            aiNumber = WinMove("⬤");                           // If AI can win     : Pick
+            if (aiNumber == null) { aiNumber = WinMove("✖"); } // If Player win     : Block
+            
             // I want to make sure the AI picks a number that hasn't been chosen
-            do {
-                int aiMove = AI.Next(1, 10);
-                aiNumber = aiMove.ToString();
-            }                                   // Generate until while = true
-            while (!ValidNumber(aiNumber));     // not false = true  :                       : Repeat until true
+            if (aiNumber == null) { // Else : Random. 
+                do {
+                    int aiMove = AI.Next(1, 10);
+                    aiNumber = aiMove.ToString(); 
+                }                                 // Generate until while = true
+                while (!ValidNumber(aiNumber));   // not false = true  :                       : Repeat until true
+            }
             
             UpdateBoard(aiNumber, "⬤");
             if (CheckWin("⬤")) {      // Check After board update
@@ -102,7 +126,6 @@ public class TicTacToe
         }
         return false; // Else, invalid.
     }
-
     static void UpdateBoard(string anyString, string anySymbol) {
         // I want to find the appropriate cell on the board, and update the number to anySymbol 
         for (int rowNumber = 0; rowNumber < cells.GetLength(0); rowNumber++) 
@@ -138,25 +161,61 @@ public class TicTacToe
         if (cells[0, 2] == sameString && cells[1, 1] == sameString && cells[2, 0] == sameString) {
             return true; 
         }
-        /* I want to loop through the columns and rows, to see if all cells are NOT occupied by a player symbol.
-         * If all cells are NOT occupied, it means the game is NOT a draw! So set fullBoard = false.
-         * Assume fullBoard = true, because if the loop breaks, it means all cells ARE occupied, meaning it is a draw */
-       
-        bool fullBoard = true;          // Assume True
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) { 
-                if (cells[row, col] != "✖" && cells[row, col] != "⬤") { 
-                    fullBoard = false;  // Set to False
-                    break;              // Otherwise, break out (it's True)
-                }
+        // Else (no win / lose)
+        return false;
+    }
+    /* I want to simulate AI intelligence, by checking the state of the game-board, defining win conditions,
+     * checking if Player can win (to block). This code should influence WHICH number the
+     * AI picks. This would then nullify the use of Random, unless it is ever needed.
+     * I could make a Winning-Move ARRAY, and reference that instead of making multiple if-statements.
+     * However, I feel this to be genuinely easier, albeit tedious.
+     * As a Bonus, the AI always picks the empty space, meaning it will WIN if the space is available. */
+    static string? WinMove(string anySymbol) { // ? : String assumes non-nullable. If null, its gucci.
+        
+        // Check if player is trying to win horizontally (rows).
+        for (int i = 0; i < 3; i++) {
+            if (cells[i, 0] == "✖" && cells[i, 1] == "✖" && cells[i, 2] != "✖" && cells[i, 2] != "⬤") { //xx
+                return cells[i, 2]; //Pick available cell (Block Player Win)
+            } 
+            if (cells[i, 0] == "✖" && cells[i, 2] == "✖" && cells[i, 1] != "✖" && cells[i, 1] != "⬤") { //x x
+                return cells[i, 1];
+            }
+            if (cells[i, 1] == "✖" && cells[i, 2] == "✖" && cells[i, 0] != "✖" && cells[i, 0] != "⬤") { // xx
+                return cells[i, 0];
             }
         }
-        if (fullBoard == true) { // Draw
-            Console.Clear(); Board();
-            Console.WriteLine("\n\x1b[93mIt's a draw!\x1b[39m"); Console.WriteLine("Press any key to continue..."); 
-            Console.ReadLine(); Environment.Exit(0); // End the game
+        // Check if player is trying to win vertically (columns).
+        for (int i = 0; i < 3; i++) {
+            if (cells[0, i] == "✖" && cells[1, i] == "✖" && cells[2, i] != "✖" && cells[2, i] != "⬤") { //xx  (v)
+                return cells[2, i]; //Pick available cell (Block Player Win)
+            } 
+            if (cells[0, i] == "✖" && cells[2, i] == "✖" && cells[1, i] != "✖" && cells[1, i] != "⬤") { //x x (v)
+                return cells[1, i]; }
+            if (cells[1, i] == "✖" && cells[2, i] == "✖" && cells[0, i] != "✖" && cells[0, i] != "⬤") { // xx (v)
+                return cells[0, i];
+            }
         }
-        // Else (no win, lose or draw)
-        return false;
+        // Check if player is trying to win diagonally : 1 way
+        if (cells[0, 0] == "✖" && cells[1, 1] == "✖" && cells[2, 2] != "✖" && cells[2, 2] != "⬤") {
+            return cells[2, 2];
+        }
+        if (cells[0, 0] == "✖" && cells[2, 2] == "✖" && cells[1, 1] != "✖" && cells[1, 1] != "⬤") {
+            return cells[1, 1];
+        }
+        if (cells[1, 1] == "✖" && cells[2, 2] == "✖" && cells[0, 0] != "✖" && cells[0, 0] != "⬤") {
+            return cells[0, 0];
+        }
+        // Check if player is trying to win diagonally : 2 way
+        if (cells[0, 2] == "✖" && cells[1, 1] == "✖" && cells[2, 0] != "✖" && cells[2, 0] != "⬤") {
+            return cells[2, 0];
+        }
+        if (cells[0, 2] == "✖" && cells[2, 0] == "✖" && cells[1, 1] != "✖" && cells[1, 1] != "⬤") {
+            return cells[1, 1];
+        }
+        if (cells[1, 1] == "✖" && cells[2, 0] == "✖" && cells[0, 2] != "✖" && cells[0, 2] != "⬤") {
+            return cells[0, 2];
+        }
+        // ELSE 
+        return null;
     }
 }
